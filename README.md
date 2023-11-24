@@ -1,6 +1,7 @@
 # Template Tango
 
-[Full documentation](https://24hoursmedia.github.io/go-templatetango)
+[Full documentation](https://24hoursmedia.github.io/go-templatetango) |
+[Github repository](https://github.com/24HOURSMEDIA/go-templatetango)
 
 A command line template parser, intended for parsing configuration files.
 
