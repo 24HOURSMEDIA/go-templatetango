@@ -29,6 +29,7 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Unzip Files
         run: |
+          mkdir -p ${BUILD_OUTPUT_DIR}
           unzip docs/webHelpDOCS2-all.zip -d ${BUILD_OUTPUT_DIR}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
