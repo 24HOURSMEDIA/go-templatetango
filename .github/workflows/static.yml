@@ -29,12 +29,12 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Unzip Files
         run: |
-          mkdir -p ${BUILD_OUTPUT_DIR}
-          unzip docs/webHelpDOCS2-all.zip -d ${BUILD_OUTPUT_DIR}
+          mkdir -p "$BUILD_OUTPUT_DIR"
+          unzip "$ZIP_FILE" -d "$BUILD_OUTPUT_DIR"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-            path: "${BUILD_OUTPUT_DIR}"
+            path: "$BUILD_OUTPUT_DIR"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
