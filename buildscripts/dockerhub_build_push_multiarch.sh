@@ -22,6 +22,14 @@ check_env "IMAGE_NAME"
 check_env "PLATFORMS"
 check_env "BUILDER_NAME"
 
+echo "Building and pushing image $IMAGE_NAME:$VERSION for platforms $PLATFORMS"
+# ask to proceed or exit with code 0
+read -p "Continue? [y/N] " -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborting"
+    exit 0
+fi
+
 (
   cd ${PROJECT_DIR}
 
