@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE vars SYSTEM "https://resources.jetbrains.com/writerside/1.0/vars.dtd">
+<vars>
+    <var name="product" value="Template Tango"/>
+    <var name="command" value="tango" />
+    <var name="docker_image" value="24hoursmedia/template-tango" />
+</vars>

@@ -1,0 +1,16 @@
+Hello {{ name }}
+{{ name | upper }}
+{% if name | length == 0 %}
+Hello Foo
+{% endif %}
+
+{% set foo = foo ? foo : "bar" %}
+{{ foo }}
+
+{{ "Mike" | say_hello }}
+
+{% if test == 2 %}
+test=2
+{% else %}
+test is not 2 but {{ test }}
+{% endif %}
