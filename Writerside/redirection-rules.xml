@@ -10,4 +10,8 @@
         <description>Created after removal of "About docs" from docs</description>
         <accepts>starter-topic.html</accepts>
     </rule>
+    <rule id="3a9f6560">
+        <description>Created after removal of "library" from docs</description>
+        <accepts>library.html</accepts>
+    </rule>
 </rules>
