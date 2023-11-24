@@ -6,7 +6,7 @@
     <var name="docker_image" value="24hoursmedia/template-tango" />
 
     <var name="github_url" value="https://github.com/24HOURSMEDIA/go-templatetango" />
-    <var name="documentation_url" value="http://24hoursmedia.github.io/go-templatetango" />
+    <var name="documentation_url" value="https://24hoursmedia.github.io/go-templatetango" />
     <var name="issues_url" value="https://github.com/24HOURSMEDIA/go-templatetango/issues" />
     <var name="dockerhub_url" value="https://hub.docker.com/repository/docker/24hoursmedia/go-templatetango/general" />
 </vars>
