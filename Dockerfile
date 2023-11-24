@@ -1,18 +1,13 @@
-ARG BUILD_IMAGE=golang:1.20-alpine
+ARG BUILD_IMAGE=golang:1.21-alpine
 
 FROM ${BUILD_IMAGE} AS builder
-ARG TARGETOS
-ARG TARGETARCH
-ARG TARGETVARIANT
 
 WORKDIR /app
 COPY . .
 
-#ENV CGO_ENABLED=0
+ENV CGO_ENABLED=0
 #RUN go test ./...
-RUN if [ -n "${TARGETVARIANT}" ]; then export TARGETVARIANTPREFIX="/${TARGETVARIANT}"; fi
-RUN echo "TARGET VARIANT WITH PREFIX: ${TARGETVARIANTPREFIX}"
-RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH}${TARGETVARIANTPREFIX} go build -ldflags="-s -w" -o builds/tango .
+RUN go build -ldflags="-s -w" -o builds/tango .
 
 FROM scratch
 COPY --from=builder /app/builds/tango /tango
