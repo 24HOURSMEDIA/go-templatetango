@@ -9,8 +9,6 @@ on:
 env:
   # Where to find the ZIP file to deploy to Github Pages
   ZIP_FILE: ./docs/webHelpDOCS2-all.zip
-  # Where to store the unzipped docs to upload to GitHub Pages
-  BUILD_OUTPUT_DIR: ./doc-builder/github-pages
 
 # permissions:
 permissions:
@@ -29,12 +27,12 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Unzip Files
         run: |
-          mkdir -p "$BUILD_OUTPUT_DIR"
-          unzip "$ZIP_FILE" -d "$BUILD_OUTPUT_DIR"
+          mkdir -p "./doc-builder/github-pages"
+          unzip "$ZIP_FILE" -d "./doc-builder/github-pages"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-            path: "$BUILD_OUTPUT_DIR"
+            path: './doc-builder/github-pages'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
