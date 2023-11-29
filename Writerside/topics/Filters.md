@@ -18,14 +18,25 @@ Hello {{ name | upper }}.
 
 Specially crafted filters:
 
-| Filter name | Description |
-|-------------|-------------|
-|             |             |
-|             |             |
-|             |             |
-|             |             |
-|             |             |
-|             |             |
+| Filter name | Description                     |
+|-------------|---------------------------------|
+| `json_value` | Encodes a value as a json value |
+|             |                                 |
+|             |                                 |
+|             |                                 |
+|             |                                 |
+|             |                                 |
+
+### `json_value`
+
+Example (VAR can be a string, number, boolean, null).
+Note that environment variables are always strings, so you need to cast them to the correct type.
+
+```json
+{
+  "foo": {{ VAR | json_value }}
+}
+```
 
 ## Default filters
 
