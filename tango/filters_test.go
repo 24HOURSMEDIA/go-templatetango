@@ -103,3 +103,49 @@ func TestJsonEscape(t *testing.T) {
 		}
 	}
 }
+
+func TestRawUrlEncode(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["rawurlencode"]
+
+	tests := []struct {
+		name     string
+		actual   func() stick.Value
+		expected stick.Value
+	}{
+		{
+			"normal",
+			func() stick.Value { return filter(nil, "foo") },
+			`foo`},
+		{
+			"with quotes",
+			func() stick.Value { return filter(nil, `foo "bar" foo`) },
+			`foo%20%22bar%22%20foo`},
+		{
+			"with unicode",
+			func() stick.Value { return filter(nil, `foo 😀`) },
+			`foo%20%F0%9F%98%80`,
+		},
+		{
+			"with backslash",
+			func() stick.Value { return filter(nil, `foo \ bar`) },
+			`foo%20%5C%20bar`},
+		{
+			"with backslash and quotes",
+			func() stick.Value { return filter(nil, `foo \ "bar"`) },
+			`foo%20%5C%20%22bar%22`,
+		},
+		{
+			"with newline",
+			func() stick.Value { return filter(nil, "foo \n bar") },
+			`foo%20%0A%20bar`,
+		},
+	}
+
+	for _, test := range tests {
+		actual := test.actual()
+		if actual != test.expected {
+			t.Errorf("rawurlencode(%s) returned an unexpected result: %s", test.name, actual)
+		}
+	}
+}

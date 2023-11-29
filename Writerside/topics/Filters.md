@@ -22,9 +22,9 @@ Specially crafted filters:
 |---------------------|---------------------------------------------------------------------|
 | `json_value`        | Encodes a value as a json value                                     |
 | `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc |
-|       `json_escape`              | Escapes a json string                                               |
+| `json_escape`       | Escapes a json string                                               |
 |                     |                                                                     |
-|                     |                                                                     |
+| `rawurlencode`       | Escapes spaces (and other special chars) for url with a % symbol    |
 |                     |                                                                     |
 
 ### `json_value`
@@ -80,6 +80,21 @@ Result:
 [
   "-- \"To be or not to be\" - Shakespeare --"
 ]
+```
+
+### `rawurlencode`
+
+Raw url encode is also called path encoding. 
+It encodes spaces and other special characters with a percent symbol.
+
+```twig
+{{ 'To be or not to be' | rawurlencode }}
+```
+
+Result:
+
+```text
+To%20be%20or%20not%20to%20be
 ```
 
 ## Default filters

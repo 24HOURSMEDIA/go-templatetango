@@ -3,6 +3,7 @@ package tango
 import (
 	"encoding/json"
 	"github.com/tyler-sommer/stick"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -13,6 +14,7 @@ func CreateFilters() map[string]stick.Filter {
 		"json_value":        jsonValue,
 		"json_casted_value": jsonCastedValue,
 		"json_escape":       jsonEscape,
+		"rawurlencode":      rawUrlEncode,
 	}
 }
 
@@ -62,4 +64,9 @@ func jsonEscape(ctx stick.Context, val stick.Value, args ...stick.Value) stick.V
 func canCastToNumber(s string) bool {
 	_, err := strconv.ParseFloat(s, 64) // 64 refers to the precision in bits
 	return err == nil
+}
+
+func rawUrlEncode(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	str := stick.CoerceString(val)
+	return url.PathEscape(str)
 }
