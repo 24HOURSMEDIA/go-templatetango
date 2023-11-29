@@ -135,7 +135,6 @@ Some of the default filters provided with the template engine:
 | `replace`          |             |
 | `reverse`          |             |
 | `round`            |             |
-| `say_hello`        |             |
 | `slice`            |             |
 | `sort`             |             |
 | `split`            |             |
