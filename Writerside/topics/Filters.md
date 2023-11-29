@@ -22,7 +22,7 @@ Specially crafted filters:
 |---------------------|---------------------------------------------------------------------|
 | `json_value`        | Encodes a value as a json value                                     |
 | `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc |
-|                     |                                                                     |
+|       `json_escape`              | Escapes a json string                                               |
 |                     |                                                                     |
 |                     |                                                                     |
 |                     |                                                                     |
@@ -63,6 +63,22 @@ Result:
   124.5,
   null,
   "foo"
+]
+```
+
+### `json_escape`
+
+```twig
+[
+  "-- {{ '"To be or not to be" - Shakespeare' | json_escape }} --"
+]
+```
+
+Result:
+
+```json
+[
+  "-- \"To be or not to be\" - Shakespeare --"
 ]
 ```
 

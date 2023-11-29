@@ -12,6 +12,7 @@ func CreateFilters() map[string]stick.Filter {
 		// encodes a value to JSON, i.e. {  "foo": {{ value|json_value }} }
 		"json_value":        jsonValue,
 		"json_casted_value": jsonCastedValue,
+		"json_escape":       jsonEscape,
 	}
 }
 
@@ -45,6 +46,16 @@ func jsonCastedValue(ctx stick.Context, val stick.Value, args ...stick.Value) st
 	}
 
 	return jsonValue(ctx, str, args...)
+}
+
+func jsonEscape(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	str := stick.CoerceString(val)
+	encoded, err := json.Marshal(str)
+	if err != nil {
+		return ""
+	}
+	// From encoded, strip the first and last character:
+	return string(encoded[1 : len(encoded)-1])
 }
 
 // isFloat checks if the given string is a valid floating point number.

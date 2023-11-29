@@ -57,3 +57,49 @@ func TestJsonCastValue(t *testing.T) {
 		}
 	}
 }
+
+func TestJsonEscape(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["json_escape"]
+
+	tests := []struct {
+		name     string
+		actual   func() stick.Value
+		expected stick.Value
+	}{
+		{
+			"normal",
+			func() stick.Value { return filter(nil, "foo") },
+			`foo`},
+		{
+			"with quotes",
+			func() stick.Value { return filter(nil, `foo "bar" foo`) },
+			`foo \"bar\" foo`},
+		{
+			"with unicode",
+			func() stick.Value { return filter(nil, `foo 😀`) },
+			`foo 😀`,
+		},
+		{
+			"with backslash",
+			func() stick.Value { return filter(nil, `foo \ bar`) },
+			`foo \\ bar`},
+		{
+			"with backslash and quotes",
+			func() stick.Value { return filter(nil, `foo \ "bar"`) },
+			`foo \\ \"bar\"`,
+		},
+		{
+			"with newline",
+			func() stick.Value { return filter(nil, "foo \n bar") },
+			`foo \n bar`,
+		},
+	}
+
+	for _, test := range tests {
+		actual := test.actual()
+		if actual != test.expected {
+			t.Errorf("json_str_encode(%s) returned an unexpected result: %s", test.name, actual)
+		}
+	}
+}
