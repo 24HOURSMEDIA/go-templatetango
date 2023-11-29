@@ -1,0 +1,26 @@
+{
+    "json_value_examples_literal": {
+        "string": {{ VAR_STRING | json_value }},
+        "int": {{ VAR_INTEGER | json_value }},
+        "float": {{ VAR_FLOAT | json_value }},
+        "bool": {{ VAR_BOOL_TRUE | json_value }},
+        "false": {{ VAR_BOOL_FALSE | json_value }},
+        "null": {{ VAR_NULL | json_value }},
+    },
+    "json_value_examples_casted": {
+        "string": {{ VAR_STRING | json_casted_value }},
+        "int": {{ VAR_INTEGER | json_casted_value }},
+        "float": {{ VAR_FLOAT | json_casted_value }},
+        "bool": {{ VAR_BOOL_TRUE | json_casted_value }},
+        "false": {{ VAR_BOOL_FALSE | json_casted_value }},
+        "null": {{ VAR_NULL | json_casted_value }},
+    },
+    b: [
+         {{ 'True' | json_casted_value }},
+         {{ 'false' | json_casted_value }},
+         {{ 'null' | json_casted_value }},
+         {{ '124.5' | json_casted_value }},
+         {{ 'null' | json_casted_value }},
+         {{ 'foo' | json_casted_value }}
+       ]
+}

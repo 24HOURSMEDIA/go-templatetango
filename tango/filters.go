@@ -3,15 +3,19 @@ package tango
 import (
 	"encoding/json"
 	"github.com/tyler-sommer/stick"
+	"strconv"
+	"strings"
 )
 
 func CreateFilters() map[string]stick.Filter {
 	return map[string]stick.Filter{
 		// encodes a value to JSON, i.e. {  "foo": {{ value|json_value }} }
-		"json_value": jsonValue,
+		"json_value":        jsonValue,
+		"json_casted_value": jsonCastedValue,
 	}
 }
 
+// jsonValue encodes a value to JSON, i.e. {  "foo": {{ value|json_value }} }
 func jsonValue(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
 	input := val
 	encoded, err := json.Marshal(input)
@@ -20,4 +24,31 @@ func jsonValue(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Va
 	}
 	// Convert the byte slice to a string and return
 	return string(encoded)
+}
+
+// jsonCastValue encodes a value to JSON, i.e. {  "foo": {{ value|json_value }} }
+func jsonCastedValue(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	str := stick.CoerceString(val)
+	normalizedStr := strings.TrimSpace(strings.ToLower(str))
+	if canCastToNumber(str) {
+		v, _ := strconv.ParseFloat(str, 64)
+		return jsonValue(ctx, v, args...)
+	}
+	// if normalized string is "true", "false"
+	if normalizedStr == "true" || normalizedStr == "false" {
+		v, _ := strconv.ParseBool(normalizedStr)
+		return jsonValue(ctx, v, args...)
+	}
+	// if normalized string is "null""
+	if normalizedStr == "null" {
+		return jsonValue(ctx, nil, args...)
+	}
+
+	return jsonValue(ctx, str, args...)
+}
+
+// isFloat checks if the given string is a valid floating point number.
+func canCastToNumber(s string) bool {
+	_, err := strconv.ParseFloat(s, 64) // 64 refers to the precision in bits
+	return err == nil
 }

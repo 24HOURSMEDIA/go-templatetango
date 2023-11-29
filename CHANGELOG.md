@@ -9,4 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Filters for use in json templates: json_value
+- Filters for use in json templates: json_value, json_casted_value
