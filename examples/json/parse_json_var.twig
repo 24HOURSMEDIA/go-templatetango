@@ -1,0 +1,14 @@
+{% set json = '{"a": "b", "c": "d"}' %}
+{% set data = json | json_decode %}
+
+Parsed json: {{ json }}
+
+{% for key, value in data %}
+    {{ key }}: {{ value }}
+{% endfor %}
+
+----
+
+{%for key,value in VAR_JSON_ARRAY | json_decode %}
+    {{key}}: {{value}}
+{%endfor%}

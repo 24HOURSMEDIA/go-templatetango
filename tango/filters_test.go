@@ -149,3 +149,17 @@ func TestRawUrlEncode(t *testing.T) {
 		}
 	}
 }
+
+func TestJsonDecode(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["json_decode"]
+	actual := filter(nil, `{"foo":"bar", "foobar": 3.1}`).(map[string]interface{})
+	expected := map[string]stick.Value{"foo": "bar", "foobar": 3.1}
+	// compare the values of the two maps
+	for key, value1 := range expected {
+		if value2, ok := actual[key]; !ok || value1 != value2 {
+			t.Errorf("json_decode returned an unexpected result: %s", actual)
+		}
+	}
+
+}

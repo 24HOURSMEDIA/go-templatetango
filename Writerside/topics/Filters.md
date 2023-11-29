@@ -23,8 +23,9 @@ Specially crafted filters:
 | `json_value`        | Encodes a value as a json value                                     |
 | `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc |
 | `json_escape`       | Escapes a json string                                               |
+| `json_decode`       | Decode a json string for further processing                         |
 |                     |                                                                     |
-| `rawurlencode`       | Escapes spaces (and other special chars) for url with a % symbol    |
+| `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol    |
 |                     |                                                                     |
 
 ### `json_value`
@@ -80,6 +81,15 @@ Result:
 [
   "-- \"To be or not to be\" - Shakespeare --"
 ]
+```
+
+### `json_decode`
+
+```twig
+{% set json = '{"foo": "bar", "foobar": 2}' %}
+{% for key, value in json | json_decode %}
+  {{ key }}: {{ value }}
+{% endfor %
 ```
 
 ### `rawurlencode`

@@ -15,6 +15,7 @@ func CreateFilters() map[string]stick.Filter {
 		"json_casted_value": jsonCastedValue,
 		"json_escape":       jsonEscape,
 		"rawurlencode":      rawUrlEncode,
+		"json_decode":       jsonDecode,
 	}
 }
 
@@ -69,4 +70,14 @@ func canCastToNumber(s string) bool {
 func rawUrlEncode(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
 	str := stick.CoerceString(val)
 	return url.PathEscape(str)
+}
+
+func jsonDecode(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	str := stick.CoerceString(val)
+	var v interface{}
+	err := json.Unmarshal([]byte(str), &v)
+	if err != nil {
+		return ""
+	}
+	return v
 }
