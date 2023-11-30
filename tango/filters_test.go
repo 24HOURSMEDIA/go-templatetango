@@ -188,7 +188,11 @@ func TestJsonDecode(t *testing.T) {
 			// compare the map of value 1 to value 2
 			for key, valueVal1 := range value1.(map[string]stick.Value) {
 				if valueVal2, ok := value2.(map[string]stick.Value)[key]; !ok || valueVal1 != valueVal2 {
-					t.Errorf("json_decode returned an unexpected result: %s versus expected %s", valueVal2, valueVal1)
+					t.Errorf(
+						"json_decode returned an unexpected result: %s versus expected %s",
+						valueVal2,
+						valueVal1,
+					)
 				}
 			}
 		}
