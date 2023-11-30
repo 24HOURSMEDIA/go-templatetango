@@ -3,6 +3,7 @@ package tango
 import (
 	"encoding/json"
 	"github.com/tyler-sommer/stick"
+	"log"
 	"net/url"
 	"strconv"
 	"strings"
@@ -74,10 +75,10 @@ func rawUrlEncode(ctx stick.Context, val stick.Value, args ...stick.Value) stick
 
 func jsonDecode(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
 	str := stick.CoerceString(val)
-	var v interface{}
+	var v stick.Value
 	err := json.Unmarshal([]byte(str), &v)
 	if err != nil {
-		return ""
+		log.Fatal("jsonDecode error: ", err)
 	}
-	return v
+	return stickify(v)
 }

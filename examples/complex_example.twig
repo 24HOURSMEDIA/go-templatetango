@@ -1,0 +1,11 @@
+{# get the config from some env var where it is encoded in json #}
+{% set hosts = '[{"host": "localhost"}, {"host": "example.com", "scheme": "https", "port": 443}]' | json_decode %}
+{% set defaultHost = {"host": null, "scheme": "http", "port": 80} %}
+
+{% for host in hosts %}
+    {% set host = defaultHost | merge(host)  %}
+    <server>
+        listen {{ host.host }}:{{ host.port }}
+        {% if host.scheme == "https" %}ssl on{% else %}ssl off{% endif %}
+    </server>
+{% endfor %}

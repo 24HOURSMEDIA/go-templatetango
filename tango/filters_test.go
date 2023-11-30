@@ -153,13 +153,45 @@ func TestRawUrlEncode(t *testing.T) {
 func TestJsonDecode(t *testing.T) {
 	filters := CreateFilters()
 	filter := filters["json_decode"]
-	actual := filter(nil, `{"foo":"bar", "foobar": 3.1}`).(map[string]interface{})
-	expected := map[string]stick.Value{"foo": "bar", "foobar": 3.1}
-	// compare the values of the two maps
-	for key, value1 := range expected {
-		if value2, ok := actual[key]; !ok || value1 != value2 {
-			t.Errorf("json_decode returned an unexpected result: %s", actual)
+
+	// Test with a object
+	func() {
+		actual := filter(nil, `{"foo":"bar", "foobar": 3.1}`).(map[string]stick.Value)
+		expected := map[string]stick.Value{"foo": "bar", "foobar": 3.1}
+		// compare the values of the two maps
+		for key, value1 := range expected {
+			if value2, ok := actual[key]; !ok || value1 != value2 {
+				t.Errorf("json_decode returned an unexpected result: %s", actual)
+			}
 		}
-	}
+	}()
+
+	// Test with a array
+	func() {
+		actual := filter(nil, `[1.0, 2.0, "foo", 3.0]`).([]stick.Value)
+		expected := []stick.Value{1.0, 2.0, "foo", 3.0}
+		// compare the values of the two maps
+		for key, value1 := range expected {
+			if value2 := actual[key]; value1 != value2 {
+				t.Errorf("json_decode returned an unexpected result: %s", actual)
+			}
+		}
+	}()
+
+	// Test with array with objects
+	func() {
+		actual := filter(nil, `[{"foo": "bar"}, {"bar":"foo"}]`).([]stick.Value)
+		expected := []stick.Value{map[string]stick.Value{"foo": "bar"}, map[string]stick.Value{"bar": "foo"}}
+		// compare the values of the two maps
+		for key, value1 := range expected {
+			value2 := actual[key]
+			// compare the map of value 1 to value 2
+			for key, valueVal1 := range value1.(map[string]stick.Value) {
+				if valueVal2, ok := value2.(map[string]stick.Value)[key]; !ok || valueVal1 != valueVal2 {
+					t.Errorf("json_decode returned an unexpected result: %s versus expected %s", valueVal2, valueVal1)
+				}
+			}
+		}
+	}()
 
 }
