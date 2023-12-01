@@ -21,7 +21,7 @@ docker run --rm 24hoursmedia/template-tango stick:list-filters
 ### Build and run with go
 
 ```
-go build -ldflags="-s -w" -o builds/%command% .
+go build -ldflags="-s -w" -o builds/tango .
 ```
 
 Run with go:
