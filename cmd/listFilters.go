@@ -16,7 +16,7 @@ var listFiltersCmd = &cobra.Command{
 	Short: "Lists filters available to templates",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		stickEnv := tango.CreateStick()
+		stickEnv := tango.CreateStickWithCwd()
 		// Extract keys into a slice and sort
 		keys := make([]string, 0, len(stickEnv.Filters))
 		for key := range stickEnv.Filters {

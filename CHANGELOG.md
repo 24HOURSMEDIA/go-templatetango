@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added support for include, embed, macros, and layouts.
+- Add support for parsing files in an entire directory and outputting them to another directory.
 
 ### Fixed
 - Fixed some small errors in the docs
