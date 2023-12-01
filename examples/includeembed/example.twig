@@ -1,0 +1,20 @@
+
+
+{% set name = 'Mike' %}
+demonstration of include/embed for {{ name }}.
+
+=== INCLUDE EXAMPLE ===
+{% include 'included.twig' with {name: name} only %}
+
+=== EMBED EXAMPLE ===
+{% embed 'embedded.twig' %}
+    {% block message %}
+        Hello {{ name }}!
+    {% endblock %}
+{% endembed %}
+
+=== MACRO EXAMPLE ===
+{% import 'macros.twig' as messages %}
+{{ messages.say_hello('Mike') }}
+
+

@@ -16,5 +16,5 @@ builds/%command% --help
 FROM %docker_image% AS template_tango
 
 FROM alpine
-COPY /%command% /usr/local/bin/%command%
+COPY --from=template_tango /%command% /usr/local/bin/%command%
 ```

@@ -22,14 +22,7 @@ var parseFileCmd = &cobra.Command{
 			return
 		}
 		filePath := args[0]
-		// load the template or return an error
-		template, err := os.ReadFile(filePath)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-
-		parsed, err := tango.Parse(string(template), tango.CreateParams())
+		parsed, err := tango.Parse(filePath, tango.CreateParams())
 		if err != nil {
 			log.Fatal(err)
 			return
