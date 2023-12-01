@@ -26,6 +26,17 @@ These templates can have conditional sections.
 %command% parse:file nginx_server.conf.twig >> nginx_server.conf
 ```
 
+
+### Parsing all .twig files
+
+And outputting them to another directory, without the .twig extension.
+The input dir is also used as the work directory.
+.env files are always loaded from the current work directory (not the input directory)
+
+```
+%command%  parse:dir ./templates.d ./conf.d
+```
+
 ### Example template:
 
 nginx.conf:
