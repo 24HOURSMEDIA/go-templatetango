@@ -7,6 +7,10 @@
         <variables>
             <noindex-content>false</noindex-content>
         </variables>
+        <footer>
+            <copyright>24HOURSMEDIA 2023</copyright>
+            <link href="https:/www.24hoursmedia.com/en">www.24hoursmedia.com</link>
+        </footer>
     </build-profile>
 
 </buildprofiles>
