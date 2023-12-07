@@ -1,6 +1,5 @@
 .idea
-
-builds/*
 local/*
+builds/*
 !builds/.gitkeep
 

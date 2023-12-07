@@ -47,7 +47,7 @@ var parseDirCmd = &cobra.Command{
 		stick := tango.CreateStickWithWorkDir(sourceDir)
 		// parse all files
 		for _, sourceFile := range sourceFiles {
-			targetFile := strings.TrimRight(sourceFile, fileStrip)
+			targetFile := strings.TrimSuffix(sourceFile, fileStrip)
 			filesMap[sourceFile] = targetFile
 
 			parsed, err := tango.ParseWithStickEnv(sourceFile, templateParams, stick)
