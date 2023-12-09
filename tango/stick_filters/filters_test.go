@@ -1,4 +1,4 @@
-package tango
+package stick_filters
 
 import (
 	"github.com/tyler-sommer/stick"
@@ -198,4 +198,39 @@ func TestJsonDecode(t *testing.T) {
 		}
 	}()
 
+}
+
+func TestBoolifyFilter(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["boolify"]
+
+	trueValues := []interface{}{
+		stick.Value("true"),
+		stick.Value(1.1),
+		stick.Value(true),
+		true,
+		1,
+	}
+	falseValues := []interface{}{
+		stick.Value("false"),
+		stick.Value(0.0),
+		stick.Value(false),
+		false,
+		0,
+		nil,
+	}
+	//errorValues := []interface{}{"foo", []string{"foo"}, map[string]string{"foo": "bar"}}
+
+	for _, trueValue := range trueValues {
+		result := filter(nil, trueValue).(bool)
+		if result != true {
+			t.Errorf("boolify returned an unexpected result: %v", result)
+		}
+	}
+	for _, falseValue := range falseValues {
+		result := filter(nil, falseValue).(bool)
+		if result != false {
+			t.Errorf("boolify returned an unexpected result: %v", result)
+		}
+	}
 }

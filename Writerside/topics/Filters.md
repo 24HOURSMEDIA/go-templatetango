@@ -26,7 +26,7 @@ Specially crafted filters:
 | `json_decode`       | Decode a json string for further processing                         |
 |                     |                                                                     |
 | `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol    |
-|                     |                                                                     |
+| `boolify`           | Convert 'on', 'off', 'true', '1', 1 etc to boolean values           |
 
 ### `json_value`
 
@@ -105,6 +105,36 @@ Result:
 
 ```text
 To%20be%20or%20not%20to%20be
+```
+
+### `boolify`
+
+Convert various formats to a boolean.
+
+Integer and float values (or strings that convert to an int or float) that are not `0` return true.
+Integer and float values (or strings that convert to an int or float) that equal `0` return false.
+null returns false
+The following strings return true: 'true', 'on', 'yes', 'y', 'enable', 'enabled'
+The following strings return false: 'false', 'off', 'no', 'n', 'disable', 'disabled'
+
+Examples:
+
+```twig
+{% if 'on' | boolify  %}
+true
+{% endif %}
+{% if 'On' | boolify  %}
+true
+{% endif %}
+{% if 'EnAbLed' | boolify  %}
+true
+{% endif %}
+{% if 0.1 | boolify  %}
+true
+{% endif %}
+{% if 'false' | boolify  %}
+true
+{% endif %}
 ```
 
 ## Default filters
