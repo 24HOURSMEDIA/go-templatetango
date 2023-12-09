@@ -1,4 +1,4 @@
-package tango
+package stick_filters
 
 import (
 	"encoding/json"
@@ -17,6 +17,7 @@ func CreateFilters() map[string]stick.Filter {
 		"json_escape":       jsonEscape,
 		"rawurlencode":      rawUrlEncode,
 		"json_decode":       jsonDecode,
+		"boolify":           boolifyFilter,
 	}
 }
 
@@ -79,6 +80,14 @@ func jsonDecode(ctx stick.Context, val stick.Value, args ...stick.Value) stick.V
 	err := json.Unmarshal([]byte(str), &v)
 	if err != nil {
 		log.Fatal("jsonDecode error: ", err)
+	}
+	return stickify(v)
+}
+
+func boolifyFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	v, err := boolify(val)
+	if err != nil {
+		log.Fatal("boolify error: ", err)
 	}
 	return stickify(v)
 }

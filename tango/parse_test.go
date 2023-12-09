@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestParse(t *testing.T) {
+func TestParseString(t *testing.T) {
 	template := "Hello, {{ name }}!"
 	params := map[string]stick.Value{"name": "FooBar"}
-	result, err := Parse(template, &params)
+	result, err := ParseString(template, &params)
 	if err != nil {
 		t.Errorf("Parse() returned an error: %s", err)
 	}
@@ -17,13 +17,13 @@ func TestParse(t *testing.T) {
 	}
 }
 
-func TestParseWithEscaping(t *testing.T) {
+func TestParseStringWithEscaping(t *testing.T) {
 	// Ensure that values in 'html' remain unescaped
 	// It is the responsibility of the template author to ensure that
 
 	template := "HTML: \"{{ html }}\""
 	params := map[string]stick.Value{"html": "a&b"}
-	result, err := Parse(template, &params)
+	result, err := ParseString(template, &params)
 	if err != nil {
 		t.Errorf("Parse() returned an error: %s", err)
 	}
@@ -33,7 +33,7 @@ func TestParseWithEscaping(t *testing.T) {
 
 	template = "<a href=\"{{ url }}\">{{ url }}</a>"
 	params = map[string]stick.Value{"url": "https://example.com/?a=b&c=d"}
-	result, err = Parse(template, &params)
+	result, err = ParseString(template, &params)
 	if err != nil {
 		t.Errorf("Parse() returned an error: %s", err)
 	}

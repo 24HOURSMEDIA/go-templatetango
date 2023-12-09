@@ -5,10 +5,11 @@ import (
 	"github.com/tyler-sommer/stick/twig/filter"
 	"log"
 	"os"
+	"templatetango/tango/stick_filters"
 )
 
 // CreateStickWithCwd creates a new stick.Env with the default filters and the filters defined in this package
-// It uses the current working directory to the filesystem loader
+// It uses the current working directory for the filesystem loader.
 func CreateStickWithCwd() *stick.Env {
 	d, err := os.Getwd()
 	if err != nil {
@@ -17,11 +18,20 @@ func CreateStickWithCwd() *stick.Env {
 	return CreateStickWithWorkDir(d)
 }
 
+// CreateStickStringParser creates a new stick.Env with the default filters and the filters defined in this package
+// It uses the string loader. This does not support 'include' etc.
+func CreateStickStringParser() *stick.Env {
+	loader := stick.StringLoader{}
+	env := stick.New(&loader)
+	env.Filters = mergeMaps(filter.TwigFilters(), stick_filters.CreateFilters())
+	return env
+}
+
 // CreateStickWithWorkDir creates a new stick.Env with the default filters and the filters defined in this package
 func CreateStickWithWorkDir(workDir string) *stick.Env {
 	loader := stick.NewFilesystemLoader(workDir)
 	env := stick.New(loader)
-	env.Filters = mergeMaps(filter.TwigFilters(), CreateFilters())
+	env.Filters = mergeMaps(filter.TwigFilters(), stick_filters.CreateFilters())
 	return env
 }
 
