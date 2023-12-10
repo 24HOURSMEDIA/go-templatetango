@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4] - 2023-12-10
+
 ### Added
 - Added a boolify filter that evaluates strings, numbers and bools as boolean (i.e. 'on', 'false', 'off', '0')
 - Added an option to the parse commands to set the template directory to resolve includes
