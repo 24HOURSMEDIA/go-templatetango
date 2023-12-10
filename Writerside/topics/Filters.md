@@ -133,7 +133,7 @@ true
 true
 {% endif %}
 {% if 'false' | boolify  %}
-true
+false
 {% endif %}
 ```
 

@@ -10,6 +10,7 @@ import (
 
 // CreateStickWithCwd creates a new stick.Env with the default filters and the filters defined in this package
 // It uses the current working directory for the filesystem loader.
+// deprecated: use CreateStickWithWorkDir instead!
 func CreateStickWithCwd() *stick.Env {
 	d, err := os.Getwd()
 	if err != nil {

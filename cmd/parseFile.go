@@ -21,12 +21,21 @@ var parseFileCmd = &cobra.Command{
 			log.Fatal("parse:template requires exactly one argument")
 			return
 		}
-		filePath := args[0]
-		parsed, err := tango.Parse(filePath, tango.CreateParams())
+		filePathArg := args[0]
+		resolved, err := resolveTemplateFileDirAndPath(cmd, filePathArg)
 		if err != nil {
 			log.Fatal(err)
 			return
 		}
+
+		stickEnv := tango.CreateStickWithWorkDir(resolved.AbsDir)
+		params := tango.CreateParams()
+		parsed, err := tango.ParseWithStickEnv(resolved.Relative, params, stickEnv)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
 		_, err = fmt.Fprintf(os.Stdout, parsed)
 		if err != nil {
 			log.Fatal(err)
@@ -36,5 +45,6 @@ var parseFileCmd = &cobra.Command{
 }
 
 func init() {
+	addTemplatesDirOption(parseFileCmd)
 	rootCmd.AddCommand(parseFileCmd)
 }

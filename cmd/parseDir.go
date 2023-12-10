@@ -29,48 +29,106 @@ var parseDirCmd = &cobra.Command{
 		sourceDir := args[0]
 		targetDir := args[1]
 
-		// assert sourceDir is a dir and exists
-		fs_helpers.AssertDirExists(sourceDir)
+		templatesDir, err := resolveTemplateFileDirAndPath(cmd, sourceDir)
+		dirToScan := filepath.Join(templatesDir.AbsDir, templatesDir.Relative)
+		fmt.Println("- using templates dir: " + templatesDir.AbsDir)
+		fmt.Println("- directory to scan: " + dirToScan)
+
+		// assert sourceDir is a AbsDir and exists
+		fs_helpers.AssertDirExists(dirToScan)
 		fs_helpers.EnsureDirExists(targetDir)
 
-		sourceFiles, err := fs_helpers.FindFilesInDir(sourceDir, fileMask)
-		if err != nil {
-			log.Fatalf("Error reading directory %s", sourceDir)
-		}
-		log.Printf("Found %d template files in directory %s\n", len(sourceFiles), sourceDir)
+		// Make a map of all sourceFiles to targetFiles, stripping the extension
+		fmt.Println("scanning directory " + dirToScan)
+		filesMap := makeMapOfFiles(dirToScan, targetDir, fileMask, fileStrip)
+		fmt.Printf("found %d files to parse\n", len(filesMap))
 
-		filesMap := make(map[string]string)
-		parsedMap := make(map[string]string)
+		for sourceFile, targetFile := range filesMap {
+			debugPrintf(cmd, "Source file: %s\n", sourceFile)
+			debugPrintf(cmd, "Target file: %s\n", targetFile)
+			debugPrintln(cmd)
+		}
+
 		templateParams := tango.CreateParams()
 
-		// create an environment using the source directory as the working directory
-		stick := tango.CreateStickWithWorkDir(sourceDir)
-		// parse all files
-		for _, sourceFile := range sourceFiles {
-			targetFile := strings.TrimSuffix(sourceFile, fileStrip)
-			filesMap[sourceFile] = targetFile
+		type parseResult struct {
+			sourceFile string
+			targetFile string
+			parsed     string
+		}
+		parsed := make([]parseResult, 0)
+		for sourceFile, targetFile := range filesMap {
+			if err != nil {
+				log.Fatalf("Error resolving file %s - %s", sourceFile, err)
+			}
 
-			parsed, err := tango.ParseWithStickEnv(sourceFile, templateParams, stick)
+			relSourceFile, err := filepath.Rel(templatesDir.AbsDir, sourceFile)
+			stickEnv := tango.CreateStickWithWorkDir(templatesDir.AbsDir)
+			parsedContent, err := tango.ParseWithStickEnv(relSourceFile, templateParams, stickEnv)
 			if err != nil {
 				log.Fatalf("Error parsing file %s - %s", sourceFile, err)
 			}
-			parsedMap[sourceFile] = parsed
+
+			result := parseResult{
+				sourceFile: sourceFile,
+				targetFile: targetFile,
+				parsed:     parsedContent,
+			}
+			parsed = append(parsed, result)
 		}
 
-		// write all parsed results
-		for sourceFile, targetFile := range filesMap {
-			fullSourcePath := filepath.Join(sourceDir, sourceFile)
-			fullTargetPath := filepath.Join(targetDir, targetFile)
-			parsed := parsedMap[sourceFile]
-			fmt.Printf("Writing file %s to %s (%d bytes)\n", fullSourcePath, fullTargetPath, len(parsed))
-			if err := os.WriteFile(fullTargetPath, []byte(parsed), 0644); err != nil {
-				log.Fatalf("Error writing file %s", fullTargetPath)
+		// Write all the parsed results if not in debug mode
+		if isInDebugMode(cmd) {
+			fmt.Println("Debug mode: not writing files")
+
+			for _, result := range parsed {
+				fmt.Println("=====================================================")
+				fmt.Printf("parsing %s\n", result.sourceFile)
+				fmt.Println(result.targetFile + ":")
+				fmt.Println("```")
+				fmt.Println(result.parsed)
+				fmt.Println("```")
+				fmt.Println()
+			}
+
+			return
+		}
+
+		for _, result := range parsed {
+			fmt.Printf("- writing parsed file %s to %s (%d bytes)\n", result.sourceFile, result.targetFile,
+				len(result.parsed))
+			if err := os.WriteFile(result.targetFile, []byte(result.parsed), 0644); err != nil {
+				log.Fatalf("Error writing file %s", result.targetFile)
 			}
 		}
-
 	},
 }
 
+// makeMapOfFiles makes a map of absolute paths source files to absolute paths of target files
+// The target file names are the source files with the fileStrip suffix removed
+func makeMapOfFiles(sourceDir string, targetDir string, fileMask string, fileStrip string) map[string]string {
+	filesMap := make(map[string]string)
+	sourceFiles, err := fs_helpers.FindFilesInDir(sourceDir, fileMask)
+	if err != nil {
+		log.Fatalf("Error reading directory %s", sourceDir)
+	}
+	absTargetDir, err := filepath.Abs(targetDir)
+	if err != nil {
+		log.Fatalf("Error getting absolute path of %s", targetDir)
+	}
+	for _, sourceFile := range sourceFiles {
+		absSourceFile, err := filepath.Abs(filepath.Join(sourceDir, sourceFile))
+		if err != nil {
+			log.Fatalf("Error getting absolute path of %s", sourceFile)
+		}
+		targetFile := strings.TrimSuffix(sourceFile, fileStrip)
+		filesMap[absSourceFile] = filepath.Join(absTargetDir, targetFile)
+	}
+	return filesMap
+}
+
 func init() {
+	addTemplatesDirOption(parseDirCmd)
+	addDebugOption(parseDirCmd, "Does not write files but prints the parsed content to stdout")
 	rootCmd.AddCommand(parseDirCmd)
 }
