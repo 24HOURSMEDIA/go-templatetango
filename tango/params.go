@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// CreateParams creates a map of environment variables
 func CreateParams() *map[string]stick.Value {
 	// get all environment variables as a map of strings
 	vars := make(map[string]string)

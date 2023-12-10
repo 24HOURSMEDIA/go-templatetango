@@ -31,6 +31,7 @@ var showParamsCmd = &cobra.Command{
 	},
 }
 
+// init registers the command with Cobra
 func init() {
 	rootCmd.AddCommand(showParamsCmd)
 }

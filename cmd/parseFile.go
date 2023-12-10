@@ -45,6 +45,7 @@ var parseFileCmd = &cobra.Command{
 	},
 }
 
+// init registers the command with Cobra
 func init() {
 	addTemplatesDirOption(parseFileCmd)
 	rootCmd.AddCommand(parseFileCmd)

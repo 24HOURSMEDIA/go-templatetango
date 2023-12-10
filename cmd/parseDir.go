@@ -129,6 +129,7 @@ func makeMapOfFiles(sourceDir string, targetDir string, fileMask string, fileStr
 	return filesMap
 }
 
+// init registers the command with Cobra
 func init() {
 	addTemplatesDirOption(parseDirCmd)
 	addDebugOption(parseDirCmd, "Does not write files but prints the parsed content to stdout")

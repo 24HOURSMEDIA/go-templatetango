@@ -32,6 +32,7 @@ var listFiltersCmd = &cobra.Command{
 	},
 }
 
+// init registers the command with Cobra
 func init() {
 	rootCmd.AddCommand(listFiltersCmd)
 }
