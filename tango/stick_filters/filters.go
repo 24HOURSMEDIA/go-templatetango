@@ -18,6 +18,7 @@ func CreateFilters() map[string]stick.Filter {
 		"rawurlencode":      rawUrlEncode,
 		"json_decode":       jsonDecode,
 		"boolify":           boolifyFilter,
+		"bool_switch":       boolSwitchFilter,
 	}
 }
 
@@ -90,4 +91,18 @@ func boolifyFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stic
 		log.Fatal("boolify error: ", err)
 	}
 	return stickify(v)
+}
+
+func boolSwitchFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	if len(args) < 2 {
+		log.Fatal("boolSwitch error: two arguments must be provided, a true value and a false value")
+	}
+	boolVal, err := boolify(val)
+	if err != nil {
+		log.Fatal("boolSwitch error: ", err)
+	}
+	if boolVal {
+		return stickify(args[0])
+	}
+	return stickify(args[1])
 }
