@@ -234,3 +234,23 @@ func TestBoolifyFilter(t *testing.T) {
 		}
 	}
 }
+
+func TestBoolSwitchFilter(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["bool_switch"]
+
+	result := filter(nil, true, "ok", "not ok")
+	if result != "ok" {
+		t.Errorf("bool_switch returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, false, "ok", "not ok")
+	if result != "not ok" {
+		t.Errorf("bool_switch returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, "disabled", "ok", "not ok")
+	if result != "not ok" {
+		t.Errorf("bool_switch returned an unexpected result: %v", result)
+	}
+}

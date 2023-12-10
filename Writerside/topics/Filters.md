@@ -27,6 +27,7 @@ Specially crafted filters:
 |                     |                                                                     |
 | `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol    |
 | `boolify`           | Convert 'on', 'off', 'true', '1', 1 etc to boolean values           |
+| `bool_switch`       | Boolifies the value and return the first or the second argument     |
 
 ### `json_value`
 
@@ -135,6 +136,23 @@ true
 {% if 'false' | boolify  %}
 false
 {% endif %}
+```
+
+### `bool_switch`
+
+Return one of the arguments dependent upon the boolified value.
+
+Example:
+
+```twig
+{{ 'enabled' | bool_switch('the switch is enabled', 'the switch is disabled' }}
+{{ 'off' | bool_switch('the switch is enabled', 'the switch is disabled' }}
+```
+
+Results:
+```
+the switch is enabled
+the switch is disabled
 ```
 
 ## Default filters
