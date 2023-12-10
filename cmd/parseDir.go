@@ -29,6 +29,8 @@ var parseDirCmd = &cobra.Command{
 		sourceDir := args[0]
 		targetDir := args[1]
 
+		fmt.Println("Tango: parsing directory `" + sourceDir + "` to `" + targetDir + "`")
+
 		templatesDir, err := resolveTemplateFileDirAndPath(cmd, sourceDir)
 		dirToScan := filepath.Join(templatesDir.AbsDir, templatesDir.Relative)
 		fmt.Println("- using templates dir: " + templatesDir.AbsDir)
@@ -39,9 +41,9 @@ var parseDirCmd = &cobra.Command{
 		fs_helpers.EnsureDirExists(targetDir)
 
 		// Make a map of all sourceFiles to targetFiles, stripping the extension
-		fmt.Println("scanning directory " + dirToScan)
+		fmt.Println("- scanning directory " + dirToScan)
 		filesMap := makeMapOfFiles(dirToScan, targetDir, fileMask, fileStrip)
-		fmt.Printf("found %d files to parse\n", len(filesMap))
+		fmt.Printf("- found %d files to parse\n", len(filesMap))
 
 		for sourceFile, targetFile := range filesMap {
 			debugPrintf(cmd, "Source file: %s\n", sourceFile)

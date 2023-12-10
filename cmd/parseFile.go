@@ -22,6 +22,7 @@ var parseFileCmd = &cobra.Command{
 			return
 		}
 		filePathArg := args[0]
+		// ! No info on stdout!
 		resolved, err := resolveTemplateFileDirAndPath(cmd, filePathArg)
 		if err != nil {
 			log.Fatal(err)
