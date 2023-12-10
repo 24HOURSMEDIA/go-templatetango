@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added a boolify filter that evaluates strings, numbers and bools as boolean (i.e. 'on', 'false', 'off', '0')
+- Added an option to the parse commands to set the template directory to resolve includes
+
+### Modified
+- Resolve relative paths in the parse:file command against the template directory is specified
+- Resolve a relative source dir in the parse:dir command against the template directory is specified
+- If no template dir is specified in parse:file, the directory of the file is used as the templates dir
+- If no template dir is specified in parse:dir, the directory of the source dir is used as the templates dir
 
 ## [1.3] - 2023-12-07
 

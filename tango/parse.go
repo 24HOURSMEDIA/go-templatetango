@@ -6,8 +6,15 @@ import (
 )
 
 // Parse parses a twig template with the given parameters
+// deprecated: use ParseFileWithWorkDir instead!
 func Parse(templateFile string, params *map[string]stick.Value) (string, error) {
 	stickEnv := CreateStickWithCwd()
+	return ParseWithStickEnv(templateFile, params, stickEnv)
+}
+
+// ParseFileWithWorkDir parses a twig template with the given parameters and the given working directory
+func ParseFileWithWorkDir(templateFile string, params *map[string]stick.Value, workDir string) (string, error) {
+	stickEnv := CreateStickWithWorkDir(workDir)
 	return ParseWithStickEnv(templateFile, params, stickEnv)
 }
 
