@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Added exists filter
+- Added the `exists` filter to check if a variable with some name exists in the current scope
+- Added the `value` filter to get the value of a variable specified by a name in the current scope or a default
 
 ### Changed
 - Updated informatory texts

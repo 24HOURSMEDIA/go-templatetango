@@ -288,6 +288,7 @@ func TestExistsFilter(t *testing.T) {
 	loader := stick.StringLoader{}
 	var st = stick.New(&loader)
 	st.Filters = CreateFilters()
+
 	buf := new(bytes.Buffer)
 
 	st.Execute(
@@ -307,6 +308,56 @@ func TestExistsFilter(t *testing.T) {
 	)
 	result = buf.String()
 	if result != "0" {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+}
+
+func TestValueFilter(t *testing.T) {
+	loader := stick.StringLoader{}
+	var st = stick.New(&loader)
+	st.Filters = CreateFilters()
+
+	buf := new(bytes.Buffer)
+	st.Execute(
+		"{{ \"foo\"|value }}",
+		buf,
+		map[string]stick.Value{"foo": "bar"},
+	)
+	result := buf.String()
+	if result != "bar" {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	buf.Truncate(0)
+	st.Execute(
+		"{{ \"foo\"|value(\"foo\") }}",
+		buf,
+		map[string]stick.Value{"foo": "bar"},
+	)
+	result = buf.String()
+	if result != "bar" {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	buf.Truncate(0)
+	st.Execute(
+		"{{ \"bar\"|value }}",
+		buf,
+		map[string]stick.Value{"foo": "bar"},
+	)
+	result = buf.String()
+	if result != "" {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	buf.Truncate(0)
+	st.Execute(
+		"{{ \"bar\"|value(\"default\") }}",
+		buf,
+		map[string]stick.Value{"foo": "bar"},
+	)
+	result = buf.String()
+	if result != "default" {
 		t.Errorf("exists returned an unexpected result: %v", result)
 	}
 }
