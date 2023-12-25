@@ -1,6 +1,7 @@
 package stick_filters
 
 import (
+	"bytes"
 	"github.com/tyler-sommer/stick"
 	"testing"
 )
@@ -252,5 +253,60 @@ func TestBoolSwitchFilter(t *testing.T) {
 	result = filter(nil, "disabled", "ok", "not ok")
 	if result != "not ok" {
 		t.Errorf("bool_switch returned an unexpected result: %v", result)
+	}
+}
+
+func TestExistsFilter(t *testing.T) {
+	filters := CreateFilters()
+	filter := filters["exists"]
+
+	result := filter(nil, "foo")
+	if result != false {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, nil)
+	if result != false {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, "")
+	if result != false {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, 0)
+	if result != false {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	result = filter(nil, false)
+	if result != false {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	loader := stick.StringLoader{}
+	var st = stick.New(&loader)
+	st.Filters = CreateFilters()
+	buf := new(bytes.Buffer)
+
+	st.Execute(
+		"{% if \"foo\"|exists %}1{% else %}0{% endif %}",
+		buf, map[string]stick.Value{"foo": "bar"},
+	)
+	result = buf.String()
+	if result != "1" {
+		t.Errorf("exists returned an unexpected result: %v", result)
+	}
+
+	buf.Truncate(0)
+	st.Execute(
+		"{% if \"foo\"|exists %}1{% else %}0{% endif %}",
+		buf,
+		map[string]stick.Value{"bar": "foo"},
+	)
+	result = buf.String()
+	if result != "0" {
+		t.Errorf("exists returned an unexpected result: %v", result)
 	}
 }

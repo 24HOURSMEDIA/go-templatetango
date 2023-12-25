@@ -19,6 +19,7 @@ func CreateFilters() map[string]stick.Filter {
 		"json_decode":       jsonDecode,
 		"boolify":           boolifyFilter,
 		"bool_switch":       boolSwitchFilter,
+		"exists":            existsFilter,
 	}
 }
 
@@ -105,4 +106,14 @@ func boolSwitchFilter(ctx stick.Context, val stick.Value, args ...stick.Value) s
 		return stickify(args[0])
 	}
 	return stickify(args[1])
+}
+
+// existsFilter checks if a variable exists in the current context
+func existsFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
+	if (ctx == nil) || (ctx.Scope() == nil) {
+		return false
+	}
+	var name = stick.CoerceString(val)
+	_, exists := ctx.Scope().All()[name]
+	return stickify(exists)
 }
