@@ -24,14 +24,6 @@ func applyMappingWithSuffix(
 	return &target
 }
 
-func makeStringMap(val map[string]stick.Value) (map[string]string, error) {
-	target := make(map[string]string)
-	for key, val := range val {
-		target[key] = stick.CoerceString(val)
-	}
-	return target, nil
-}
-
 // remapFilter remaps a map of keys to new keys, using the suffix to
 // append to the key to look up the value in the source map. If the value
 // is not found, the default value is used.

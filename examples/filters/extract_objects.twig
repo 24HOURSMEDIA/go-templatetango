@@ -1,0 +1,27 @@
+
+`extract_objects` is a powerful filter that can be used to extract objects from the current scope.
+
+Example:
+
+```
+{% set HOST = "foo" %}
+{% set PORT = "80" %}
+{% set HOST_0 = "bar" %}
+{% set PORT_0 = "81" %}
+{% set HOST_1 = "qux" %}
+{% set PORT_1 = "82" %}
+{# included because it is the first key in the mapping #}
+{% set HOST_70 = "fooqux" %}
+{# NOT included becausethe first key in the mapping is missing #}
+{% set PORT_71 = "fooqux" %}
+
+{# try to map from 0...100 #}
+{% set params = {"host": "HOST", "port": "PORT"} | extract_objects(100, "HOST", "undefined") %}
+
+{{ params | json_encode }}
+{# output: [{"host":"foo","port":"80"},{"host":"bar","port":"81"},{"host":"qux","port":"82"},{"host":"fooqux","port":"undefined"}]} #}
+
+{% for paramObj in params %}{{ paramObj.host }}:{{ paramObj.port }}
+{% endfor %}
+
+```

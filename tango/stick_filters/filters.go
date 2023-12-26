@@ -23,6 +23,7 @@ func CreateFilters() map[string]stick.Filter {
 		"value":             valueFilter,
 		"apply_mapping":     applyMappingFilter,
 		"fatality":          fatalityFilter,
+		"extract_objects":   extractObjectsFilter,
 	}
 }
 
