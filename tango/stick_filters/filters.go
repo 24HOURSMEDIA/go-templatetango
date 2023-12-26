@@ -21,6 +21,8 @@ func CreateFilters() map[string]stick.Filter {
 		"bool_switch":       boolSwitchFilter,
 		"exists":            existsFilter,
 		"value":             valueFilter,
+		"apply_mapping":     applyMappingFilter,
+		"fatality":          fatalityFilter,
 	}
 }
 
@@ -119,6 +121,8 @@ func existsFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stick
 	return stickify(exists)
 }
 
+// valueFilter returns the value of a variable in the current scope and context,
+// or a default value if it does not exist
 func valueFilter(ctx stick.Context, val stick.Value, args ...stick.Value) stick.Value {
 	if (ctx == nil) || (ctx.Scope() == nil) {
 		return stickify(nil)

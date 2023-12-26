@@ -2,18 +2,19 @@
 
 Specially crafted filters:
 
-| Filter name         | Description                                                           |
-|---------------------|-----------------------------------------------------------------------|
-| `json_value`        | Encodes a value as a json value                                       |
-| `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc   |
-| `json_escape`       | Escapes a json string                                                 |
-| `json_decode`       | Decode a json string for further processing                           |
-|                     |                                                                       |
-| `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol      |
-| `boolify`           | Convert 'on', 'off', 'true', '1', 1 etc to boolean values             |
-| `bool_switch`       | Boolifies the value and return the first or the second argument       |
-| `exists`            | Check if a variable with a name exists in the current scope           |
-| `value`              | Retrieve a value by name from the current scope, or a default,or null |
+| Filter name         | Description                                                                    |
+|---------------------|--------------------------------------------------------------------------------|
+| `json_value`        | Encodes a value as a json value                                                |
+| `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc            |
+| `json_escape`       | Escapes a json string                                                          |
+| `json_decode`       | Decode a json string for further processing                                    |
+|                     |                                                                                |
+| `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol               |
+| `boolify`           | Convert 'on', 'off', 'true', '1', 1 etc to boolean values                      |
+| `bool_switch`       | Boolifies the value and return the first or the second argument                |
+| `exists`            | Check if a variable with a name exists in the current scope                    |
+| `value`             | Retrieve a value by name from the current context, or a default,or null        |
+| `apply_mapping`      | Maps variables by name from the current context or an object to another object |
 
 ## `json_value`
 
@@ -165,5 +166,54 @@ Output:
 foo
 default_bar
 ```
+
+## `apply_mapping` 
+
+A powerful filter that maps variables by name from the current context or an object,
+to another object.
+
+Useful to create uniform objects from .env parameters like:
+- HOST1=.., HOST2=..
+- PORT1=.., PORT2=..
+
+Examples:
+
+```
+{# map properties from one object to another #}
+{% set source = {"foo": "foo_value", "bar": "bar_value"} %}
+{% set mapping = {"attr1": "foo", "attr2": "bar", "attr3": "notexist"} %}
+{% set obj = mapping|apply_mapping(source) %}
+{{ obj.attr1 }}-{{ obj.attr2 }}-{{ obj.attr3 }}
+{# prints: `foo_value-bar_value-` }
+```
+
+```
+{# create an object from variables in the current scope, with a default if they do not exists #}
+{% set default = "default_value" %}
+{% set foo = "foo_value" %}
+{% set bar = "bar_value" %}
+{% set obj = {"attr1": "foo", "attr2": "bar", "attr3": "notexist"} | apply_mapping(nil, nil, default) %}
+{{ obj.attr1 }}-{{ obj.attr2 }}-{{ obj.attr3 }}
+{# prints: `foo_value-bar_value-default_value` #}
+```
+
+```
+{# create an object from variables in the current scope with a suffix, useful to create arrays of objects #}
+{# from environment variables like VARIABLE1=, VARIABLE2= #}
+
+{% set HOST1 = "example.com" %}
+{% set PORT1 = "443" %}
+{% set HOST2 = "foobar.com" %}
+{% set PORT2 = "80" %}
+{% set mapping = {"host": "HOST", "port": "PORT"} %}
+{% set obj1 = mapping|apply_mapping(nil, "1") %}
+{% set obj2 = mapping|apply_mapping(nil, "2") %}
+{{ obj1.host }}:{{ obj1.port }}
+{{ obj2.host }}:{{ obj2.port }}
+{# prints: #}
+{# example.com:443 #}
+{# foobar.com:80 #}
+```
+
 
 
