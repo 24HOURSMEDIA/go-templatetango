@@ -42,7 +42,7 @@ func extractObjectsFilter(
 		requiredKeyWithSuffix := requiredKey + suffix
 		fmt.Println("SUFFIX", requiredKeyWithSuffix)
 		if _, ok := scopeVars[requiredKeyWithSuffix]; ok {
-			result = append(result, applyMappingWithSuffix(mapping, scopeVars, suffix, defaultVal))
+			result = append(result, *applyMappingWithSuffix(mapping, scopeVars, suffix, defaultVal))
 		}
 	}
 	return stickify(result)

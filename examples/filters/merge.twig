@@ -1,0 +1,28 @@
+## Merge filter
+
+```
+go run main.go parse:file examples/filters/merge.twig
+```
+
+{% set obj1 = {"a": 1, "b": 2} %}
+{% set obj2 = {"c": 3, "d": 4} %}
+
+{% set obj3 = obj1|merge(obj2) %}
+{{ obj3|json_encode() }}
+
+========
+
+Test with objects retrieved from extract_objects:
+
+{% set A = 1 %}
+{% set B = 2 %}
+{% set A2 = 3 %}
+{% set B2 = 4 %}
+{% set mapping = {"attra": "A", "attrb": "B"} %}
+{% set objects =  mapping | extract_objects(10, "A") %}
+{{ objects|json_encode() }}
+{% for k, obj in objects %}
+    {{ obj|json_encode() }}
+    {% set obj2 = obj | merge({"c":666}) %}
+    {{ obj2|json_encode() }}
+{% endfor %}
