@@ -1,0 +1,25 @@
+Tidy filter
+
+```
+go run main.go parse:file examples/filters/tidy.twig
+```
+
+```
+{% set contents %}
+
+   foo
+	   baz
+	                   bar
+                        qwe
+
+
+
+
+qux
+		test
+{% endset %}
+======
+{{ contents|tidy }}
+======
+```
+

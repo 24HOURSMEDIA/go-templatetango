@@ -2,20 +2,21 @@
 
 Specially crafted filters:
 
-| Filter name         | Description                                                                    |
-|---------------------|--------------------------------------------------------------------------------|
-| `json_value`        | Encodes a value as a json value                                                |
+| Filter name        | Description                                                                    |
+|--------------------|--------------------------------------------------------------------------------|
+| `json_value`       | Encodes a value as a json value                                                |
 | `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc            |
-| `json_escape`       | Escapes a json string                                                          |
-| `json_decode`       | Decode a json string for further processing                                    |
-|                     |                                                                                |
-| `rawurlencode`      | Escapes spaces (and other special chars) for url with a % symbol               |
-| `boolify`           | Convert 'on', 'off', 'true', '1', 1 etc to boolean values                      |
-| `bool_switch`       | Boolifies the value and return the first or the second argument                |
-| `exists`            | Check if a variable with a name exists in the current scope                    |
-| `value`             | Retrieve a value by name from the current context, or a default,or null        |
-| `apply_mapping`     | Maps variables by name from the current context or an object to another object |
-| `extract_objects`    | Create objects from numbered variable names in the current scope               |`
+| `json_escape`      | Escapes a json string                                                          |
+| `json_decode`      | Decode a json string for further processing                                    |
+|                    |                                                                                |
+| `rawurlencode`     | Escapes spaces (and other special chars) for url with a % symbol               |
+| `boolify`          | Convert 'on', 'off', 'true', '1', 1 etc to boolean values                      |
+| `bool_switch`      | Boolifies the value and return the first or the second argument                |
+| `exists`           | Check if a variable with a name exists in the current scope                    |
+| `value`            | Retrieve a value by name from the current context, or a default,or null        |
+| `apply_mapping`    | Maps variables by name from the current context or an object to another object |
+| `extract_objects`  | Create objects from numbered variable names in the current scope               |`
+| `tidy`              | Clean up extra newlines in texts and attempts to fix indentation               |
 
 ## `json_value`
 
@@ -243,6 +244,49 @@ Example:
 {% for paramObj in params %}{{ paramObj.host }}:{{ paramObj.port }}
 {% endfor %}
 ```
+
+## `tidy`
+
+Clean up multiple newlines and attempts to fix standardization.
+Converts tabs to spaces.
+Very useful in templates.
+Assumes indentation of 4 spaces.
+
+```
+{% set contents %}
+
+   foo
+	   baz
+	                   bar
+                        qwe
+
+
+
+
+qux
+		test
+{% endset %}
+======
+{{ contents|tidy }}
+======
+```
+
+Output:
+
+```
+======
+    foo
+        baz
+                bar
+                    qwe
+
+qux
+            test
+
+======
+```
+
+
 
 
 
