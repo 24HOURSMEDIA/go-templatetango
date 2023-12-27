@@ -1,7 +1,6 @@
 package stick_filters
 
 import (
-	"fmt"
 	"github.com/tyler-sommer/stick"
 	"log"
 	"strconv"
@@ -40,7 +39,6 @@ func extractObjectsFilter(
 	scopeVars := ctx.Scope().All()
 	for _, suffix := range suffices {
 		requiredKeyWithSuffix := requiredKey + suffix
-		fmt.Println("SUFFIX", requiredKeyWithSuffix)
 		if _, ok := scopeVars[requiredKeyWithSuffix]; ok {
 			result = append(result, *applyMappingWithSuffix(mapping, scopeVars, suffix, defaultVal))
 		}

@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.1] - 2023-12-27
 
 ### Fixed
-- `extract_objects` does not return pointers anymore 
+- `extract_objects` does not return pointers anymore
+- fixed incorrect directory in parse:dir command
+- fixed redundant output
 
 ## [1.7.0] - 2023-12-27
 

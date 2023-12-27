@@ -60,6 +60,7 @@ var parseDirCmd = &cobra.Command{
 		}
 		parsed := make([]parseResult, 0)
 		for sourceFile, targetFile := range filesMap {
+			fmt.Println("- parsing file " + sourceFile)
 			if err != nil {
 				log.Fatalf("Error resolving file %s - %s", sourceFile, err)
 			}
