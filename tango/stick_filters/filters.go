@@ -24,6 +24,7 @@ func CreateFilters() map[string]stick.Filter {
 		"apply_mapping":     applyMappingFilter,
 		"fatality":          fatalityFilter,
 		"extract_objects":   extractObjectsFilter,
+		"tidy":              tidyFilter,
 	}
 }
 

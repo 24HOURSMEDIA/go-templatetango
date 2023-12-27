@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] 
 
+### Added
+- `tidy` filter cleans up double newlines and attempts to fix indentation in text
+
 ## [1.6.0] - 2023-12-26
 
 ### Added
