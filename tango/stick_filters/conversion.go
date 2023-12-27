@@ -2,7 +2,6 @@ package stick_filters
 
 import (
 	"errors"
-	"fmt"
 	"github.com/tyler-sommer/stick"
 	"reflect"
 	"strconv"
@@ -28,7 +27,6 @@ func stickify(v interface{}) stick.Value {
 		mapType := reflect.MapOf(rv.Type().Key(), reflect.TypeOf((*stick.Value)(nil)).Elem())
 		newMap := reflect.MakeMap(mapType)
 		for _, key := range rv.MapKeys() {
-			fmt.Println("!!")
 			newMap.SetMapIndex(key, reflect.ValueOf(stickify(rv.MapIndex(key).Interface())))
 		}
 		return newMap.Interface()
