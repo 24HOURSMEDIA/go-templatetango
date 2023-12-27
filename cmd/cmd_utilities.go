@@ -86,6 +86,17 @@ func resolveTemplateFileDirAndPath(cmd *cobra.Command, filePath string) (fileRes
 
 	// No custom directory for the templates
 	// Get the directory of the absolute filepath as the templates directory
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return fileResolveResult{}, errors.New("Error while checking the path")
+	}
+	mode := fileInfo.Mode()
+	if mode.IsDir() {
+		relativeDir, _ := filepath.Rel(filePath, filePath)
+		absDir, _ := filepath.Abs(filePath)
+		return fileResolveResult{AbsDir: absDir, Relative: relativeDir}, nil
+	}
+
 	absFilePath, err := filepath.Abs(filePath)
 	if err != nil {
 		return fileResolveResult{}, err
