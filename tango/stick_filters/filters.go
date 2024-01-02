@@ -12,19 +12,20 @@ import (
 func CreateFilters() map[string]stick.Filter {
 	return map[string]stick.Filter{
 		// encodes a value to JSON, i.e. {  "foo": {{ value|json_value }} }
-		"json_value":        jsonValue,
-		"json_casted_value": jsonCastedValue,
-		"json_escape":       jsonEscape,
-		"rawurlencode":      rawUrlEncode,
-		"json_decode":       jsonDecode,
-		"boolify":           boolifyFilter,
-		"bool_switch":       boolSwitchFilter,
-		"exists":            existsFilter,
-		"value":             valueFilter,
-		"apply_mapping":     applyMappingFilter,
-		"fatality":          fatalityFilter,
-		"extract_objects":   extractObjectsFilter,
-		"tidy":              tidyFilter,
+		"json_value":          jsonValue,
+		"json_casted_value":   jsonCastedValue,
+		"json_escape":         jsonEscape,
+		"rawurlencode":        rawUrlEncode,
+		"json_decode":         jsonDecode,
+		"boolify":             boolifyFilter,
+		"bool_switch":         boolSwitchFilter,
+		"exists":              existsFilter,
+		"value":               valueFilter,
+		"apply_mapping":       applyMappingFilter,
+		"fatality":            fatalityFilter,
+		"extract_objects":     extractObjectsFilter,
+		"objects_from_prefix": ObjectsFromPrefixFilter,
+		"tidy":                tidyFilter,
 	}
 }
 
