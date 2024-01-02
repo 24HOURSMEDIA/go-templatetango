@@ -2,21 +2,22 @@
 
 Specially crafted filters:
 
-| Filter name        | Description                                                                    |
-|--------------------|--------------------------------------------------------------------------------|
-| `json_value`       | Encodes a value as a json value                                                |
-| `json_casted_value` | Encodes a value as a json value but first tries to cast to int, etc            |
-| `json_escape`      | Escapes a json string                                                          |
-| `json_decode`      | Decode a json string for further processing                                    |
-|                    |                                                                                |
-| `rawurlencode`     | Escapes spaces (and other special chars) for url with a % symbol               |
-| `boolify`          | Convert 'on', 'off', 'true', '1', 1 etc to boolean values                      |
-| `bool_switch`      | Boolifies the value and return the first or the second argument                |
-| `exists`           | Check if a variable with a name exists in the current scope                    |
-| `value`            | Retrieve a value by name from the current context, or a default,or null        |
-| `apply_mapping`    | Maps variables by name from the current context or an object to another object |
-| `extract_objects`  | Create objects from numbered variable names in the current scope               |`
-| `tidy`              | Clean up extra newlines in texts and attempts to fix indentation               |
+| Filter name           | Description                                                                    |
+|-----------------------|--------------------------------------------------------------------------------|
+| `json_value`          | Encodes a value as a json value                                                |
+| `json_casted_value`   | Encodes a value as a json value but first tries to cast to int, etc            |
+| `json_escape`         | Escapes a json string                                                          |
+| `json_decode`         | Decode a json string for further processing                                    |
+|                       |                                                                                |
+| `rawurlencode`        | Escapes spaces (and other special chars) for url with a % symbol               |
+| `boolify`             | Convert 'on', 'off', 'true', '1', 1 etc to boolean values                      |
+| `bool_switch`         | Boolifies the value and return the first or the second argument                |
+| `exists`              | Check if a variable with a name exists in the current scope                    |
+| `value`               | Retrieve a value by name from the current context, or a default,or null        |
+| `apply_mapping`       | Maps variables by name from the current context or an object to another object |
+| `extract_objects`     | Create objects from numbered variable names in the current scope               |
+| `objects_from_prefix` | Create objects from variables in the current scope sharing the same prefix     |
+| `tidy`                | Clean up extra newlines in texts and attempts to fix indentation               |
 
 ## `json_value`
 
@@ -243,6 +244,39 @@ Example:
 
 {% for paramObj in params %}{{ paramObj.host }}:{{ paramObj.port }}
 {% endfor %}
+```
+
+## `objects_from_prefix`
+
+This filter returns a list of objects from variables with the same prefix.
+The prefix is the first part of the variable name before the first underscore.
+A number may be added after the prefix so multiple objects can be returned.
+You can specify an optional default value.
+
+```
+
+{% set proxy_host = "host" %}
+{% set proxy_port = "port" %}
+{% set proxy1_host = "host1" %}
+{% set proxy1_port = "port1" %}
+{% set proxy4_host = "host4" %}
+{% set proxy4_port = "port4" %}
+
+{% set objects = "proxy" | objects_from_prefix(10) %}
+{{ objects | json_encode }}
+
+Expect:
+[{"host":"host","port":"port"},{"host":"host1","port":"port1"},{"host":"host4","port":"port4"}]
+
+.. with default values
+
+{% set default = {"generator": "tango", "host": "default_host"} %}
+{% set proxy5_port = "port5" %}
+{% set objects = "proxy" | objects_from_prefix(10, default) %}
+{{ objects | json_encode }}
+
+Expect:
+[{"generator":"tango","host":"host","port":"port"},{"generator":"tango","host":"host1","port":"port1"},{"generator":"tango","host":"host4","port":"port4"},{"generator":"tango","host":"default_host","port":"port5"}]
 ```
 
 ## `tidy`
