@@ -1,0 +1,32 @@
+# Objects from prefix filter
+
+This filter returns a list of objects from variables with the same prefix.
+The prefix is the first part of the variable name before the first underscore.
+A number may be added after the prefix so multiple objects can be returned.
+
+```
+go run main.go parse:file examples/filters/objects_from_prefix.twig
+```
+
+{% set proxy_host = "host" %}
+{% set proxy_port = "port" %}
+{% set proxy1_host = "host1" %}
+{% set proxy1_port = "port1" %}
+{% set proxy4_host = "host4" %}
+{% set proxy4_port = "port4" %}
+
+{% set objects = "proxy" | objects_from_prefix(10) %}
+{{ objects | json_encode }}
+
+```
+[{"host":"host","port":"port"},{"host":"host1","port":"port1"},{"host":"host4","port":"port4"}]
+```
+
+{% set default = {"generator": "tango", "host": "default_host"} %}
+{% set proxy5_port = "port5" %}
+{% set objects = "proxy" | objects_from_prefix(10, default) %}
+{{ objects | json_encode }}
+
+```
+[{"generator":"tango","host":"host","port":"port"},{"generator":"tango","host":"host1","port":"port1"},{"generator":"tango","host":"host4","port":"port4"},{"generator":"tango","host":"default_host","port":"port5"}]
+```

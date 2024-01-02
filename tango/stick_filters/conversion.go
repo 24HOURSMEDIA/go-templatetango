@@ -36,6 +36,14 @@ func stickify(v interface{}) stick.Value {
 	}
 }
 
+func destickifyMap(v map[string]stick.Value) map[string]interface{} {
+	result := make(map[string]interface{})
+	for key, value := range v {
+		result[key] = value
+	}
+	return result
+}
+
 // boolify converts a value to a bool. It supports the following types:
 // bool, string, int, float32, float64
 // Float and int values that do not evaluate to 0 are converted to true.
